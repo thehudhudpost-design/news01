@@ -3,235 +3,1353 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>𝐕𝐨𝐢𝐜𝐞 𝐎𝐟 𝐑𝐢𝐬𝐢𝐧𝐠 𝐁𝐚𝐧𝐠𝐥𝐚 - অটো নিউজ ও ফটোকার্ড স্টুডিও</title>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <title>AI অটো নিউজ ফটোকার্ড স্টুডিও - 𝐕𝐨𝐢𝐜𝐞 𝐎𝐟 𝐑𝐢𝐬𝐢𝐧𝐠 𝐁𝐚𝐧𝐠𝐥𝐚</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Hind Siliguri & Noto Sans Bengali -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #d93025;
-            --primary-dark: #b31412;
-            --bg: #f4f7f6;
-            --card: #ffffff;
-            --text: #202124;
-            --border: #dadce0;
-            --success: #0f9d58;
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background-color: #f1f5f9;
         }
-        * { box-sizing: border-box; font-family: 'Hind Siliguri', sans-serif; }
-        body { background: var(--bg); color: var(--text); margin: 0; padding: 15px; }
-        .container { max-width: 650px; margin: 0 auto; }
-        
-        header {
-            background: var(--primary);
-            color: white;
-            padding: 16px;
+        .font-bangla-display {
+            font-family: 'Noto Sans Bengali', 'Hind Siliguri', sans-serif;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
             border-radius: 10px;
-            margin-bottom: 15px;
-            text-align: center;
         }
-        header h1 { margin: 0; font-size: 19px; }
-        header p { margin: 4px 0 0; font-size: 13px; opacity: 0.9; }
-
-        .card {
-            background: var(--card);
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 15px;
-            border: 1px solid var(--border);
-            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+        .spinner-ring {
+            border-top-color: #dc2626;
+            animation: spin 0.75s linear infinite;
         }
-        .card h2 { margin-top: 0; font-size: 16px; border-bottom: 1px solid #eee; padding-bottom: 6px; color: var(--primary); }
-
-        textarea, input, select { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px; }
-        
-        button { padding: 12px; border: none; border-radius: 6px; font-size: 15px; font-weight: bold; cursor: pointer; width: 100%; margin-bottom: 8px; }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { background: var(--primary-dark); }
-        .btn-success { background: var(--success); color: white; }
-        .btn-success:hover { background: #0b8043; }
-
-        /* Photo Card Preview Area */
-        #photoCard {
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .photocard-preview-frame {
             width: 100%;
-            max-width: 400px;
-            height: 400px;
-            margin: 0 auto 15px auto;
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-            background-size: cover;
-            background-position: center;
-            border-radius: 10px;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 20px;
-            color: white;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            max-width: 440px;
+            aspect-ratio: 1 / 1;
+            margin: 0 auto;
         }
-        .pc-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.45); z-index: 1; }
-        .pc-content { position: relative; z-index: 2; display: flex; flex-direction: column; height: 100%; justify-content: space-between; }
-        .pc-header { display: flex; justify-content: space-between; align-items: center; }
-        .pc-badge { background: #d93025; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; }
-        .pc-brand { font-size: 13px; font-weight: bold; }
-        .pc-title { font-size: 19px; font-weight: 700; line-height: 1.4; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-        .pc-footer { font-size: 11px; opacity: 0.9; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 6px; text-align: center; }
-        
-        .news-list-item { background: #f8f9fa; border: 1px solid #ddd; padding: 10px; border-radius: 6px; margin-bottom: 8px; cursor: pointer; transition: 0.2s; }
-        .news-list-item:hover { background: #e8f0fe; border-color: #4285f4; }
-        .alert-success { color: var(--success); font-weight: bold; font-size: 13px; margin-top: 6px; text-align: center; display: none; }
+        #photocardCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            border-radius: 1rem;
+            box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.25), 0 8px 10px -6px rgba(15, 23, 42, 0.15);
+        }
     </style>
 </head>
-<body>
+<body class="text-slate-800 antialiased pb-16">
 
-<div class="container">
-    <header>
-        <h1>𝐕𝐨𝐢𝐜𝐞 𝐎𝐟 𝐑𝐢𝐬𝐢𝐧𝐠 𝐁𝐚𝐧𝐠𝐥𝐚</h1>
-        <p>সোর্স নিউজ থেকে অটো ফটোকার্ড ও কপি স্টুডিও</p>
+    <!-- Toast Notification Banner -->
+    <div id="toastBanner" class="fixed top-4 right-4 left-4 sm:left-auto sm:w-96 z-50 transform transition-all duration-300 -translate-y-28 opacity-0 pointer-events-none">
+        <div id="toastInner" class="bg-slate-900 text-white px-4 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 border border-slate-700">
+            <span id="toastIcon" class="text-lg shrink-0">✅</span>
+            <p id="toastMessage" class="text-sm font-medium leading-snug"></p>
+        </div>
+    </div>
+
+    <!-- APP HEADER -->
+    <header class="bg-gradient-to-r from-slate-950 via-red-950 to-slate-950 text-white shadow-lg sticky top-0 z-30 border-b border-red-900/40">
+        <div class="max-w-5xl mx-auto px-3 sm:px-6 py-3.5 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3 min-w-0">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-red-600 to-rose-700 flex items-center justify-center font-black text-white text-lg shadow-md shrink-0 border border-red-400/40 overflow-hidden">
+                    <img id="headerBrandLogo" src="" alt="Logo" class="w-full h-full object-contain hidden">
+                    <span id="headerBrandFallback">VR</span>
+                </div>
+                <div class="min-w-0">
+                    <h1 id="headerPortalTitle" class="text-base sm:text-xl font-bold tracking-tight truncate">𝐕𝐨𝐢𝐜𝐞 𝐎𝐟 𝐑𝐢𝐬𝐢𝐧𝐠 𝐁𝐚𝐧𝐠𝐥𝐚</h1>
+                    <p class="text-[11px] sm:text-xs text-red-200/90 truncate">ফেসবুক পেইজ ও নিউজ সোর্স থেকে অটো AI ফটোকার্ড তৈরি</p>
+                </div>
+            </div>
+
+            <button onclick="downloadStandaloneHTML()" class="bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-bold text-xs sm:text-sm px-3.5 sm:px-4 py-2.5 rounded-xl shadow-md transition flex items-center gap-1.5 shrink-0 border border-emerald-400/30">
+                <span>⬇️</span>
+                <span class="hidden sm:inline">HTML ফাইল ডাউনলোড</span>
+                <span class="sm:hidden">HTML ডাউনলোড</span>
+            </button>
+        </div>
+
+        <!-- 3-Tab Navigation Bar -->
+        <nav class="max-w-5xl mx-auto px-3 sm:px-6 pb-3 flex gap-2 overflow-x-auto">
+            <button onclick="switchTab('feed')" id="tabBtn-feed" class="flex-1 min-w-[125px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition bg-red-600 text-white shadow">
+                📰 নিউজ ও পেইজ ফিড
+            </button>
+            <button onclick="switchTab('sources')" id="tabBtn-sources" class="flex-1 min-w-[125px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition bg-white/10 text-slate-200 hover:bg-white/20">
+                🔗 সোর্স ও ফেসবুক পেইজ
+            </button>
+            <button onclick="switchTab('settings')" id="tabBtn-settings" class="flex-1 min-w-[125px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition bg-white/10 text-slate-200 hover:bg-white/20">
+                🎨 ব্র্যান্ড ও লোগো সেটিংস
+            </button>
+        </nav>
     </header>
 
-    <!-- সোর্স ম্যানেজার ও ফিড ফেচার -->
-    <div class="card">
-        <h2>১. নিউজ পোর্টাল বা পেজ সিলেক্ট করুন</h2>
-        <select id="sourceSelect" onchange="fetchNewsFeed()">
-            <option value="https://www.bbc.com/bengali/index.xml">বিবিসি বাংলা (RSS)</option>
-            <option value="https://www.prothomalo.com/feed">প্রথম আলো (RSS)</option>
-        </select>
-        <button class="btn-primary" onclick="fetchNewsFeed()">🔄 সর্বশেষ খবর লোড করুন</button>
-        <div id="newsItemsContainer" style="max-height: 200px; overflow-y: auto; margin-top: 10px;"></div>
-    </div>
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="max-w-5xl mx-auto px-3 sm:px-6 pt-5">
 
-    <!-- এডিটর ও ফটো কার্ড সেকশন -->
-    <div class="card">
-        <h2>২. খবরের শিরোনাম ও বিবরণ</h2>
-        <label><strong>শিরোনাম:</strong></label>
-        <input type="text" id="inputTitle" placeholder="খবরের শিরোনাম এখানে থাকবে..." oninput="updateCard()">
+        <!-- TAB 1: NEWS & PAGE FEED -->
+        <section id="tabPanel-feed" class="space-y-5">
 
-        <label><strong>ক্যাটাগরি:</strong></label>
-        <input type="text" id="inputCategory" value="জাতীয় সংবাদ" oninput="updateCard()">
+            <!-- Manual Facebook Post / Custom News Paste Card -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <button onclick="toggleManualPasteBox()" class="w-full px-4 sm:px-6 py-4 flex items-center justify-between text-left bg-gradient-to-r from-amber-50 to-orange-50/70 hover:from-amber-100/80 hover:to-orange-100/70 transition">
+                    <div class="flex items-center gap-3">
+                        <span class="w-9 h-9 rounded-xl bg-amber-500 text-white flex items-center justify-center text-lg shadow-xs shrink-0">✍️</span>
+                        <div>
+                            <h2 class="font-bold text-slate-900 text-sm sm:text-base">নিজের নিউজ / ফেসবুক পোস্ট পেস্ট করুন</h2>
+                            <p class="text-xs text-slate-600">যেকোনো ফেসবুক পোস্টের লেখা বা ছবি দিয়ে মুহূর্তেই ফটোকার্ড বানান</p>
+                        </div>
+                    </div>
+                    <span id="manualBoxChevron" class="text-slate-600 font-bold text-sm px-2.5 py-1 rounded-lg bg-white border border-amber-200">খুলুন ▼</span>
+                </button>
 
-        <label><strong>ব্যাকগ্রাউন্ড ছবির লিংক বা আপলোড:</strong></label>
-        <input type="file" id="imageUpload" accept="image/*" onchange="loadLocalImage(event)">
+                <div id="manualPasteBody" class="hidden p-4 sm:p-6 border-t border-slate-100 space-y-4 bg-white">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1.5">ফেসবুক পোস্টের লেখা বা সংবাদের শিরোনাম পেস্ট করুন *</label>
+                        <textarea id="manualPostText" rows="3" placeholder="এখানে যেকোনো ফেসবুক পেইজের পোস্ট বা সংবাদের মূল অংশ পেস্ট করুন..." class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white"></textarea>
+                    </div>
 
-        <label><strong>বিস্তারিত বিবরণ (কমেন্ট/পোস্টের জন্য):</strong></label>
-        <textarea id="rawBody" rows="4" placeholder="বিস্তারিত বিবরণ..."></textarea>
-    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">ছবির লিংক (Image URL - ঐচ্ছিক)</label>
+                            <input type="url" id="manualImageUrl" placeholder="https://example.com/news-photo.jpg" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-red-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">অথবা ফোন গ্যালারি থেকে ছবি দিন</label>
+                            <label class="w-full cursor-pointer bg-slate-100 hover:bg-slate-200 border border-dashed border-slate-400 rounded-xl py-2.5 px-3.5 flex items-center justify-center gap-2 text-xs sm:text-sm font-bold text-slate-700 transition">
+                                <span>📷</span>
+                                <span id="manualFileLabel" class="truncate">গ্যালারি থেকে ছবি বাছাই করুন</span>
+                                <input type="file" id="manualLocalImage" accept="image/*" onchange="handleManualLocalImage(event)" class="hidden">
+                            </label>
+                        </div>
+                    </div>
 
-    <!-- লাইভ ফটো কার্ড প্রিভিউ -->
-    <div class="card" style="text-align: center;">
-        <h2>৩. ফটো কার্ড প্রিভিউ</h2>
-        <div id="photoCard">
-            <div class="pc-overlay"></div>
-            <div class="pc-content">
-                <div class="pc-header">
-                    <span class="pc-badge" id="cardCategory">জাতীয় সংবাদ</span>
-                    <span class="pc-brand">𝐕𝐨𝐢𝐜𝐞 𝐎𝐟 𝐑𝐢𝐬𝐢𝐧𝐠 𝐁𝐚𝐧𝐠𝐥𝐚</span>
+                    <div class="flex flex-wrap items-center justify-between gap-3 pt-1">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold text-slate-600">ক্যাটাগরি:</span>
+                            <select id="manualCategorySelect" class="px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm font-bold text-slate-800">
+                                <option value="ব্রেকিং নিউজ">ব্রেকিং নিউজ</option>
+                                <option value="জাতীয়">জাতীয়</option>
+                                <option value="আন্তর্জাতিক">আন্তর্জাতিক</option>
+                                <option value="খেলাধুলা">খেলাধুলা</option>
+                                <option value="প্রযুক্তি">প্রযুক্তি</option>
+                                <option value="বিনোদন">বিনোদন</option>
+                            </select>
+                        </div>
+                        <button onclick="generateCardFromManualInput()" class="w-full sm:w-auto bg-red-600 hover:bg-red-700 active:scale-95 text-white font-bold text-sm px-6 py-3 rounded-xl shadow transition flex items-center justify-center gap-2">
+                            <span>🎨</span>
+                            <span>AI ফটোকার্ড তৈরি করুন</span>
+                        </button>
+                    </div>
                 </div>
-                <div class="pc-title" id="cardTitle">খবরের শিরোনাম এখানে দেখাবে...</div>
-                <div class="pc-footer">voiceofrisingbangla.com</div>
+            </div>
+
+            <!-- Fetch All Sources Bar -->
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
+                <div>
+                    <h2 class="font-bold text-slate-900 text-base sm:text-lg">সর্বশেষ সংবাদ ও ফেসবুক পেইজ আপডেট</h2>
+                    <p id="feedStatusSubtitle" class="text-xs text-slate-500">নিচের যেকোনো খবরে ক্লিক করে এক ক্লিকে ফটোকার্ড তৈরি করুন</p>
+                </div>
+                <button onclick="fetchAllNewsFromSources()" id="fetchNewsBtn" class="bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 active:scale-95 text-white font-bold text-sm px-5 py-3 rounded-xl shadow-md transition flex items-center justify-center gap-2 shrink-0">
+                    <span class="text-base">🔄</span>
+                    <span>সব সোর্স থেকে সর্বশেষ খবর আনুন</span>
+                </button>
+            </div>
+
+            <!-- News Feed Cards Grid -->
+            <div id="newsFeedGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+
+        </section>
+
+        <!-- TAB 2: SOURCES & FACEBOOK PAGES -->
+        <section id="tabPanel-sources" class="hidden space-y-5">
+
+            <div class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200 space-y-4">
+                <div class="border-b border-slate-100 pb-3">
+                    <h2 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <span>🔗</span>
+                        <span>নিউজ পোর্টাল ও ফেসবুক পেইজ সোর্স যুক্ত করুন</span>
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">আপনার পছন্দের নিউজ পোর্টাল বা ফেসবুক পেইজের RSS ফিড লিংক সংরক্ষণ করে রাখুন</p>
+                </div>
+
+                <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4 text-xs sm:text-sm text-blue-950 space-y-1.5 leading-relaxed">
+                    <p class="font-bold text-blue-900 flex items-center gap-1.5">
+                        <span>💡</span>
+                        <span>যেকোনো Facebook পেইজের ফ্রি RSS লিংক কীভাবে পাবেন?</span>
+                    </p>
+                    <p>১. <strong>RSS.app</strong> অথবা ফ্রি ওপেন-সোর্স <strong>RSS-Bridge</strong> ওয়েবসাইটে গিয়ে আপনার পছন্দের ফেসবুক পেইজের লিংক দিন।</p>
+                    <p>২. সেখান থেকে তৈরি হওয়া <strong>RSS Feed URL</strong> টি কপি করে নিচের ঘরে পেস্ট করে সেভ করুন।</p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-2.5">
+                    <input type="text" id="newSourceName" placeholder="সোর্স / পেইজের নাম (যেমন: প্রথম আলো)" class="sm:w-2/5 px-3.5 py-3 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-red-500">
+                    <input type="url" id="newSourceUrl" placeholder="RSS বা RSS-Bridge লিংক (https://...)" class="flex-1 px-3.5 py-3 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-red-500">
+                    <button onclick="addNewSource()" class="bg-slate-900 hover:bg-slate-800 active:scale-95 text-white font-bold text-sm px-5 py-3 rounded-xl transition shrink-0">
+                        + সোর্স যুক্ত করুন
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-bold text-slate-800 text-base">সংরক্ষিত সোর্স তালিকা</h3>
+                    <span id="sourceCountBadge" class="text-xs font-bold bg-slate-100 text-slate-700 px-3 py-1 rounded-full">০টি সোর্স</span>
+                </div>
+                <div id="savedSourcesList" class="space-y-2.5"></div>
+            </div>
+
+        </section>
+
+        <!-- TAB 3: BRAND & LOGO SETTINGS -->
+        <section id="tabPanel-settings" class="hidden space-y-5">
+
+            <div class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200 space-y-5">
+                <div class="border-b border-slate-100 pb-3">
+                    <h2 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <span>🎨</span>
+                        <span>ব্র্যান্ড, লোগো ও থিম কালার সেটিংস</span>
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">আপনার পোর্টালের নাম, ওয়েবসাইট ও লোগো একবার সেভ করলে ফোনে স্থায়ীভাবে সেভ থাকবে</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1.5">পোর্টালের নাম</label>
+                        <input type="text" id="settingPortalName" value="𝐕𝐨𝐢𝐜𝐞 𝐎𝐟 𝐑𝐢𝐬𝐢𝐧𝐠 𝐁𝐚𝐧𝐠𝐥𝐚" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-red-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1.5">ওয়েবসাইট ঠিকানা</label>
+                        <input type="text" id="settingWebsiteUrl" value="voiceofrisingbangla.com" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-red-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-2">পোর্টালের কাস্টম লোগো আপলোড করুন</label>
+                    <div class="flex flex-col sm:flex-row items-center gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <div class="w-20 h-20 rounded-2xl bg-slate-900 flex items-center justify-center overflow-hidden border border-slate-300 shrink-0">
+                            <img id="settingsLogoPreview" src="" alt="Portal Logo" class="w-full h-full object-contain hidden">
+                            <span id="settingsLogoFallback" class="text-white font-black text-2xl">VR</span>
+                        </div>
+                        <div class="flex-1 text-center sm:text-left">
+                            <p class="text-sm font-bold text-slate-800">লোগো ছবি (PNG / JPG)</p>
+                            <p class="text-xs text-slate-500 mt-0.5">স্বচ্ছ ব্যাকগ্রাউন্ডের লোগো দিলে ফটোকার্ডে আরও প্রফেশনাল দেখাবে।</p>
+                            <div class="flex flex-wrap justify-center sm:justify-start gap-2 mt-3">
+                                <label class="cursor-pointer bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition">
+                                    <span>📤 লোগো আপলোড করুন</span>
+                                    <input type="file" id="logoFileInput" accept="image/*" onchange="handleLogoFileUpload(event)" class="hidden">
+                                </label>
+                                <button type="button" onclick="removeSavedLogo()" class="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 font-bold text-xs px-3.5 py-2.5 rounded-xl transition">
+                                    লোগো মুছুন
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-2">ফটোকার্ড থিম কালার বেছে নিন</label>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                        <button type="button" onclick="selectBrandTheme('crimson')" id="themeBtn-crimson" class="theme-selector-btn p-3 rounded-xl border-2 border-red-600 bg-red-950 text-white text-xs font-bold flex items-center justify-center gap-2 transition">
+                            <span class="w-3.5 h-3.5 rounded-full bg-red-500 inline-block"></span>
+                            <span>ক্রিমসন রেড</span>
+                        </button>
+                        <button type="button" onclick="selectBrandTheme('navy')" id="themeBtn-navy" class="theme-selector-btn p-3 rounded-xl border-2 border-transparent bg-slate-900 text-white text-xs font-bold flex items-center justify-center gap-2 transition">
+                            <span class="w-3.5 h-3.5 rounded-full bg-blue-500 inline-block"></span>
+                            <span>ডিপ নেভি</span>
+                        </button>
+                        <button type="button" onclick="selectBrandTheme('emerald')" id="themeBtn-emerald" class="theme-selector-btn p-3 rounded-xl border-2 border-transparent bg-emerald-950 text-white text-xs font-bold flex items-center justify-center gap-2 transition">
+                            <span class="w-3.5 h-3.5 rounded-full bg-emerald-500 inline-block"></span>
+                            <span>এমেরাল্ড গ্রিন</span>
+                        </button>
+                        <button type="button" onclick="selectBrandTheme('purple')" id="themeBtn-purple" class="theme-selector-btn p-3 rounded-xl border-2 border-transparent bg-purple-950 text-white text-xs font-bold flex items-center justify-center gap-2 transition">
+                            <span class="w-3.5 h-3.5 rounded-full bg-purple-500 inline-block"></span>
+                            <span>রয়্যাল পার্পল</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="pt-2 border-t border-slate-100 space-y-2">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <label class="text-xs font-bold text-slate-700">🔑 Google Gemini API Key (ঐচ্ছিক)</label>
+                        <span class="text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-0.5 rounded-full">স্মার্ট বাংলা ফরম্যাটার সক্রিয়</span>
+                    </div>
+                    <input type="password" id="settingGeminiKey" placeholder="AIzaSy..." class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-red-500">
+                </div>
+
+                <div class="pt-2 flex justify-end">
+                    <button onclick="saveAllSettings()" class="w-full sm:w-auto bg-red-600 hover:bg-red-700 active:scale-95 text-white font-bold text-sm px-7 py-3 rounded-xl shadow-md transition">
+                        💾 সব সেটিংস সেভ করুন
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- PHOTOCARD STUDIO MODAL -->
+    <div id="photocardStudioModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-xs z-40 hidden overflow-y-auto">
+        <div class="min-h-screen px-3 py-5 sm:p-6 flex items-center justify-center">
+            <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
+
+                <div class="bg-slate-900 text-white px-4 sm:px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-xl">🎨</span>
+                        <div>
+                            <h3 class="font-bold text-base sm:text-lg leading-tight">AI ফটোকার্ড স্টুডিও (১০৮০ × ১০৮০ px)</h3>
+                            <p class="text-[11px] text-slate-300">নিচে লেখা বা ছবি পরিবর্তন করলে কার্ড সাথে সাথে আপডেট হবে</p>
+                        </div>
+                    </div>
+                    <button onclick="closePhotocardStudio()" class="w-9 h-9 rounded-xl bg-white/10 hover:bg-red-600 text-white font-bold text-base transition flex items-center justify-center">
+                        ✕
+                    </button>
+                </div>
+
+                <div id="studioAiLoadingBar" class="hidden bg-indigo-50 border-b border-indigo-200 px-5 py-3 flex items-center justify-center gap-3 text-indigo-900 text-xs sm:text-sm font-bold">
+                    <div class="w-4 h-4 border-2 border-indigo-300 spinner-ring rounded-full"></div>
+                    <span>AI সংবাদটি বিশ্লেষণ করে আকর্ষণীয় বাংলা শিরোনাম তৈরি করছে...</span>
+                </div>
+
+                <div class="p-4 sm:p-6 space-y-5">
+
+                    <div class="photocard-preview-frame bg-slate-900 rounded-2xl overflow-hidden">
+                        <canvas id="photocardCanvas" width="1080" height="1080"></canvas>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">কার্ড লেআউট স্টাইল</label>
+                            <div class="grid grid-cols-3 gap-1.5">
+                                <button type="button" onclick="setCardLayout('classic')" id="layoutBtn-classic" class="layout-btn py-2 px-2 rounded-xl text-[11px] font-bold border-2 border-red-600 bg-red-50 text-red-700 transition">
+                                    ক্লাসিক ডার্ক
+                                </button>
+                                <button type="button" onclick="setCardLayout('split')" id="layoutBtn-split" class="layout-btn py-2 px-2 rounded-xl text-[11px] font-bold border-2 border-slate-200 bg-slate-50 text-slate-700 transition">
+                                    মডার্ন স্প্লিট
+                                </button>
+                                <button type="button" onclick="setCardLayout('overlay')" id="layoutBtn-overlay" class="layout-btn py-2 px-2 rounded-xl text-[11px] font-bold border-2 border-slate-200 bg-slate-50 text-slate-700 transition">
+                                    ফুল ওভারলে
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">সংবাদের ব্যাকগ্রাউন্ড ছবি</label>
+                            <label class="w-full cursor-pointer bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded-xl py-2 px-3 flex items-center justify-center gap-2 text-xs font-bold text-slate-800 transition">
+                                <span>📷</span>
+                                <span>ছবি পরিবর্তন / আপলোড করুন</span>
+                                <input type="file" id="studioPhotoInput" accept="image/*" onchange="handleStudioPhotoUpload(event)" class="hidden">
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <label class="text-xs font-bold text-slate-700">ফটোকার্ডের শিরোনাম (লাইভ এডিট)</label>
+                            <button type="button" onclick="regenerateHeadlineWithAI()" id="studioReAiBtn" class="text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded-lg transition">
+                                ✨ AI দিয়ে নতুন শিরোনাম
+                            </button>
+                        </div>
+                        <textarea id="studioHeadlineInput" rows="2" oninput="onStudioInputChange()" class="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl font-bold text-slate-900 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-red-500 leading-snug"></textarea>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">ক্যাটাগরি ট্যাগ</label>
+                                <input type="text" id="studioCategoryInput" oninput="onStudioInputChange()" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-red-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">লেখার সাইজ (<span id="studioFontSizeLabel">54</span>px)</label>
+                                <input type="range" id="studioFontSizeSlider" min="40" max="70" value="54" oninput="onStudioInputChange()" class="w-full accent-red-600 mt-2 cursor-pointer">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                        <button onclick="downloadPhotocardToGallery()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 active:scale-95 text-white font-bold text-sm sm:text-base py-3.5 px-5 rounded-2xl shadow-lg transition flex items-center justify-center gap-2">
+                            <span class="text-lg">📥</span>
+                            <span>গ্যালারিতে ডাউনলোড করুন (PNG)</span>
+                        </button>
+                        <button onclick="copyFacebookCaption()" class="bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-bold text-sm sm:text-base py-3.5 px-5 rounded-2xl shadow-md transition flex items-center justify-center gap-2">
+                            <span class="text-lg">📋</span>
+                            <span>ক্যাপশন কপি করুন</span>
+                        </button>
+                    </div>
+
+                </div>
             </div>
         </div>
-        <button class="btn-success" onclick="downloadCard()">📥 ফটো কার্ড গ্যালারিতে ডাউনলোড করুন</button>
     </div>
 
-    <!-- টেক্সট কপি সেকশন -->
-    <div class="card">
-        <h2>৪. ফেসবুক পোস্ট টেক্সট কপি</h2>
-        <button class="btn-primary" onclick="prepareText()">✨ ফেসবুকের জন্য টেক্সট সাজান</button>
-        <textarea id="finalShareText" rows="5" placeholder="সাজানো টেক্সট এখানে আসবে..." style="margin-top: 10px;"></textarea>
-        <button class="btn-success" onclick="copyEntirePost()">📋 পুরো টেক্সট এক ক্লিকে কপি করুন</button>
-        <div id="copyAlert" class="alert-success">সফল! টেক্সট কপি হয়ে গেছে।</div>
-    </div>
-</div>
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        const DEFAULT_SOURCES = [
+            { name: "বিবিসি বাংলা (BBC Bangla)", url: "https://www.bbc.com/bengali/index.xml" },
+            { name: "প্রথম আলো (Prothom Alo)", url: "https://www.prothomalo.com/feed" }
+        ];
 
-<script>
-    window.onload = function() {
-        fetchNewsFeed();
-    };
-
-    async function fetchNewsFeed() {
-        const rssUrl = document.getElementById('sourceSelect').value;
-        const container = document.getElementById('newsItemsContainer');
-        container.innerHTML = '<p style="text-align:center; color:#666;">খবর লোড হচ্ছে...</p>';
-
-        try {
-            const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
-            const res = await fetch(apiUrl);
-            const data = await res.json();
-
-            if (data.status === 'ok' && data.items) {
-                container.innerHTML = '';
-                data.items.slice(0, 5).forEach((item) => {
-                    const cleanDesc = item.description ? item.description.replace(/<[^>]*>?/gm, '') : '';
-                    const div = document.createElement('div');
-                    div.className = 'news-list-item';
-                    div.innerHTML = `<strong>${item.title}</strong>`;
-                    div.onclick = function() {
-                        document.getElementById('inputTitle').value = item.title;
-                        document.getElementById('rawBody').value = cleanDesc;
-                        updateCard();
-                    };
-                    container.appendChild(div);
-                });
-            } else {
-                container.innerHTML = '<p style="text-align:center; color:red;">খবর পাওয়া যায়নি।</p>';
+        const SAMPLE_NEWS_ITEMS = [
+            {
+                source: "বিবিসি বাংলা",
+                category: "আন্তর্জাতিক",
+                title: "বিশ্ববাজারে জ্বালানি তেলের দামে বড় পরিবর্তন, দক্ষিণ এশিয়ার অর্থনীতিতে নতুন প্রভাবের আভাস",
+                excerpt: "আন্তর্জাতিক বাজারে অপরিশোধিত জ্বালানি তেলের সরবরাহ ও চাহিদায় নতুন সমীকরণ দেখা দিয়েছে। অর্থনীতিবিদরা বলছেন, এর প্রভাব পড়তে পারে আমদানি ব্যয়ে।",
+                image: "",
+                date: "আজকের সংবাদ"
+            },
+            {
+                source: "প্রথম আলো",
+                category: "জাতীয়",
+                title: "রাজধানীতে মেট্রোরেল ও গণপরিবহন ব্যবস্থায় সমন্বিত ডিজিটাল স্মার্ট কার্ড চালু হচ্ছে",
+                excerpt: "যাত্রীদের যাতায়াত আরও সহজ ও সময়সাশ্রয়ী করতে একই কার্ডে মেট্রোরেল ও বাস ভাড়া পরিশোধের নতুন উদ্যোগ নিয়েছে পরিবহন কর্তৃপক্ষ।",
+                image: "",
+                date: "আজকের সংবাদ"
+            },
+            {
+                source: "যমুনা টিভি ফেসবুক পেইজ",
+                category: "প্রযুক্তি",
+                title: "তরুণ উদ্যোক্তাদের জন্য কৃত্রিম বুদ্ধিমত্তা ও তথ্যপ্রযুক্তি খাতে বিশেষ সরকারি প্রণোদনা ঘোষণা",
+                excerpt: "দেশের তরুণ ফ্রিল্যান্সার ও ডিজিটাল কন্টেন্ট নির্মাতাদের দক্ষতা উন্নয়নে নতুন প্রশিক্ষণ ও স্টার্টআপ ফান্ড চালুর ঘোষণা দেওয়া হয়েছে।",
+                image: "",
+                date: "৩০ মিনিট আগে"
             }
-        } catch (e) {
-            container.innerHTML = '<p style="text-align:center; color:red;">নেটওয়ার্ক সমস্যা!</p>';
+        ];
+
+        const BRAND_THEMES = {
+            crimson: {
+                name: "ক্রিমসন রেড",
+                topBg: "#111827",
+                primary: "#dc2626",
+                secondary: "#991b1b",
+                gradStart: "#450a0a",
+                gradEnd: "#090d16",
+                badgeBg: "#dc2626",
+                badgeText: "#ffffff",
+                footerBg: "#dc2626"
+            },
+            navy: {
+                name: "ডিপ নেভি",
+                topBg: "#0f172a",
+                primary: "#2563eb",
+                secondary: "#1d4ed8",
+                gradStart: "#1e3a8a",
+                gradEnd: "#020617",
+                badgeBg: "#2563eb",
+                badgeText: "#ffffff",
+                footerBg: "#1e40af"
+            },
+            emerald: {
+                name: "এমেরাল্ড গ্রিন",
+                topBg: "#022c22",
+                primary: "#059669",
+                secondary: "#047857",
+                gradStart: "#064e3b",
+                gradEnd: "#021410",
+                badgeBg: "#10b981",
+                badgeText: "#022c22",
+                footerBg: "#047857"
+            },
+            purple: {
+                name: "রয়্যাল পার্পল",
+                topBg: "#1e1b4b",
+                primary: "#7c3aed",
+                secondary: "#6d28d9",
+                gradStart: "#4c1d95",
+                gradEnd: "#0f0a1e",
+                badgeBg: "#8b5cf6",
+                badgeText: "#ffffff",
+                footerBg: "#6d28d9"
+            }
+        };
+
+        let currentFeedItems = [];
+        let manualUploadedImageObj = null;
+
+        let studioState = {
+            headline: "তরুণ উদ্যোক্তাদের জন্য কৃত্রিম বুদ্ধিমত্তা ও তথ্যপ্রযুক্তি খাতে বিশেষ প্রণোদনা ঘোষণা",
+            category: "প্রযুক্তি",
+            fontSize: 54,
+            layout: "classic",
+            themeKey: "crimson",
+            portalName: "𝐕𝐨𝐢𝐜𝐞 𝐎𝐟 𝐑𝐢𝐬𝐢𝐧𝐠 𝐁𝐚𝐧𝐠𝐥𝐚",
+            websiteUrl: "voiceofrisingbangla.com",
+            newsImageObj: null,
+            logoImageObj: null,
+            rawSourceText: ""
+        };
+
+        let toastTimeout = null;
+        function showToast(msg, type = "success") {
+            const banner = document.getElementById("toastBanner");
+            const inner = document.getElementById("toastInner");
+            const icon = document.getElementById("toastIcon");
+            const text = document.getElementById("toastMessage");
+
+            text.textContent = msg;
+            if (type === "error") {
+                inner.className = "bg-red-900 text-white px-4 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 border border-red-700";
+                icon.textContent = "⚠️";
+            } else if (type === "info") {
+                inner.className = "bg-blue-900 text-white px-4 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 border border-blue-700";
+                icon.textContent = "ℹ️";
+            } else {
+                inner.className = "bg-slate-900 text-white px-4 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 border border-slate-700";
+                icon.textContent = "✅";
+            }
+
+            banner.classList.remove("-translate-y-28", "opacity-0");
+            banner.classList.add("translate-y-0", "opacity-100");
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                banner.classList.add("-translate-y-28", "opacity-0");
+                banner.classList.remove("translate-y-0", "opacity-100");
+            }, 3200);
         }
-    }
 
-    function updateCard() {
-        const title = document.getElementById('inputTitle').value;
-        const category = document.getElementById('inputCategory').value;
-        document.getElementById('cardTitle').innerText = title || "খবরের শিরোনাম এখানে দেখাবে...";
-        document.getElementById('cardCategory').innerText = category || "সংবাদ";
-    }
+        function getBengaliDateToday() {
+            const bnDigits = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"];
+            const bnMonths = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
+            const d = new Date();
+            const day = String(d.getDate()).split("").map(n => bnDigits[n]).join("");
+            const month = bnMonths[d.getMonth()];
+            const year = String(d.getFullYear()).split("").map(n => bnDigits[n]).join("");
+            return `${day} ${month} ${year}`;
+        }
 
-    function loadLocalImage(event) {
-        const file = event.target.files[0];
-        if (file) {
+        window.onload = function() {
+            const savedBrand = JSON.parse(localStorage.getItem("vorb_brand_config") || "null");
+            if (savedBrand) {
+                studioState.portalName = savedBrand.portalName || "𝐕𝐨𝐢𝐜𝐞 𝐎𝐟 𝐑𝐢𝐬𝐢𝐧𝐠 𝐁𝐚𝐧𝐠𝐥𝐚";
+                studioState.websiteUrl = savedBrand.websiteUrl || "voiceofrisingbangla.com";
+                studioState.themeKey = savedBrand.themeKey || "crimson";
+            }
+
+            document.getElementById("settingPortalName").value = studioState.portalName;
+            document.getElementById("settingWebsiteUrl").value = studioState.websiteUrl;
+            document.getElementById("headerPortalTitle").textContent = studioState.portalName;
+            highlightSelectedThemeBtn(studioState.themeKey);
+
+            const savedKey = localStorage.getItem("gemini_api_key");
+            if (savedKey) document.getElementById("settingGeminiKey").value = savedKey;
+
+            const savedLogo = localStorage.getItem("vorb_logo_base64");
+            if (savedLogo) applyLogoDataURL(savedLogo);
+
+            if (!localStorage.getItem("vorb_sources")) {
+                localStorage.setItem("vorb_sources", JSON.stringify(DEFAULT_SOURCES));
+            }
+            renderSavedSources();
+
+            currentFeedItems = [...SAMPLE_NEWS_ITEMS];
+            renderFeedCards(currentFeedItems);
+        };
+
+        function switchTab(tabName) {
+            ["feed", "sources", "settings"].forEach(t => {
+                const panel = document.getElementById(`tabPanel-${t}`);
+                const btn = document.getElementById(`tabBtn-${t}`);
+                if (t === tabName) {
+                    panel.classList.remove("hidden");
+                    btn.className = "flex-1 min-w-[125px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition bg-red-600 text-white shadow";
+                } else {
+                    panel.classList.add("hidden");
+                    btn.className = "flex-1 min-w-[125px] py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition bg-white/10 text-slate-200 hover:bg-white/20";
+                }
+            });
+        }
+
+        function toggleManualPasteBox() {
+            const body = document.getElementById("manualPasteBody");
+            const chevron = document.getElementById("manualBoxChevron");
+            const isHidden = body.classList.contains("hidden");
+            if (isHidden) {
+                body.classList.remove("hidden");
+                chevron.textContent = "বন্ধ করুন ▲";
+            } else {
+                body.classList.add("hidden");
+                chevron.textContent = "খুলুন ▼";
+            }
+        }
+
+        function handleManualLocalImage(event) {
+            const file = event.target.files?.[0];
+            if (!file) return;
+            document.getElementById("manualFileLabel").textContent = file.name;
             const reader = new FileReader();
             reader.onload = function(e) {
-                document.getElementById('photoCard').style.backgroundImage = `url('${e.target.result}')`;
-            }
+                const img = new Image();
+                img.onload = function() {
+                    manualUploadedImageObj = img;
+                    showToast("ছবি নির্বাচন সম্পন্ন হয়েছে!");
+                };
+                img.src = e.target.result;
+            };
             reader.readAsDataURL(file);
         }
-    }
 
-    function downloadCard() {
-        const cardElement = document.getElementById('photoCard');
-        html2canvas(cardElement, { scale: 3, useCORS: true }).then(canvas => {
-            const link = document.createElement('a');
-            link.download = 'voice-of-rising-bangla-photocard.png';
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-        });
-    }
+        async function generateCardFromManualInput() {
+            const rawText = document.getElementById("manualPostText").value.trim();
+            const imageUrl = document.getElementById("manualImageUrl").value.trim();
+            const chosenCategory = document.getElementById("manualCategorySelect").value;
 
-    function prepareText() {
-        const title = document.getElementById('inputTitle').value.trim();
-        const body = document.getElementById('rawBody').value.trim();
-        if (!title) {
-            alert("আগে কোনো খবর সিলেক্ট করুন!");
-            return;
+            if (!rawText) {
+                showToast("অনুগ্রহ করে ফেসবুক পোস্টের লেখা বা শিরোনাম পেস্ট করুন!", "error");
+                return;
+            }
+
+            studioState.rawSourceText = rawText;
+            studioState.category = chosenCategory;
+
+            if (manualUploadedImageObj) {
+                studioState.newsImageObj = manualUploadedImageObj;
+            } else if (imageUrl) {
+                loadNewsImageFromUrl(imageUrl);
+            } else {
+                studioState.newsImageObj = null;
+            }
+
+            openPhotocardStudioWithAI(rawText, chosenCategory);
         }
 
-        const formattedText = `🔴 ${title}\n\n${body}\n\n📌 বিস্তারিত পড়তে ভিজিট করুন:\n🔗 https://www.voiceofrisingbangla.com\n\n#VoiceOfRisingBangla #News #Bangladesh`;
-        document.getElementById('finalShareText').value = formattedText;
-    }
+        function addNewSource() {
+            const nameEl = document.getElementById("newSourceName");
+            const urlEl = document.getElementById("newSourceUrl");
+            const name = nameEl.value.trim();
+            const url = urlEl.value.trim();
 
-    function copyEntirePost() {
-        const text = document.getElementById('finalShareText').value;
-        if (!text) {
-            alert("আগে টেক্সট সাজিয়ে নিন!");
-            return;
+            if (!name || !url) {
+                showToast("সোর্সের নাম এবং RSS লিংক দুটিই দিন!", "error");
+                return;
+            }
+
+            const sources = JSON.parse(localStorage.getItem("vorb_sources") || "[]");
+            sources.push({ name, url });
+            localStorage.setItem("vorb_sources", JSON.stringify(sources));
+
+            nameEl.value = "";
+            urlEl.value = "";
+            renderSavedSources();
+            showToast(`"${name}" সোর্স তালিকায় যুক্ত হয়েছে!`);
         }
-        navigator.clipboard.writeText(text);
-        const alertBox = document.getElementById('copyAlert');
-        alertBox.style.display = 'block';
-        setTimeout(() => { alertBox.style.display = 'none'; }, 3000);
-    }
-</script>
 
+        function deleteSavedSource(index) {
+            const sources = JSON.parse(localStorage.getItem("vorb_sources") || "[]");
+            const removed = sources[index]?.name || "সোর্স";
+            sources.splice(index, 1);
+            localStorage.setItem("vorb_sources", JSON.stringify(sources));
+            renderSavedSources();
+            showToast(`"${removed}" মুছে ফেলা হয়েছে`, "info");
+        }
+
+        function renderSavedSources() {
+            const sources = JSON.parse(localStorage.getItem("vorb_sources") || "[]");
+            const listEl = document.getElementById("savedSourcesList");
+            const badgeEl = document.getElementById("sourceCountBadge");
+
+            badgeEl.textContent = `${sources.length}টি সোর্স`;
+
+            if (sources.length === 0) {
+                listEl.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">কোনো সোর্স সেভ করা নেই। উপরে নাম ও RSS লিংক দিয়ে যুক্ত করুন।</p>`;
+                return;
+            }
+
+            listEl.innerHTML = sources.map((src, i) => `
+                <div class="flex items-center justify-between gap-3 bg-slate-50 border border-slate-200 px-3.5 py-3 rounded-xl">
+                    <div class="min-w-0 flex-1">
+                        <p class="font-bold text-sm text-slate-800 truncate">${escapeHTML(src.name)}</p>
+                        <p class="text-xs text-slate-500 truncate mt-0.5">${escapeHTML(src.url)}</p>
+                    </div>
+                    <button onclick="deleteSavedSource(${i})" class="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 font-bold text-xs px-3 py-1.5 rounded-lg transition shrink-0">
+                        মুছুন
+                    </button>
+                </div>
+            `).join("");
+        }
+
+        async function fetchAllNewsFromSources() {
+            const sources = JSON.parse(localStorage.getItem("vorb_sources") || "[]");
+            const gridEl = document.getElementById("newsFeedGrid");
+            const btn = document.getElementById("fetchNewsBtn");
+
+            if (sources.length === 0) {
+                showToast("আগে 'সোর্স ও ফেসবুক পেইজ' ট্যাবে গিয়ে লিংক যুক্ত করুন!", "error");
+                switchTab("sources");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = `<span class="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin"></span><span>খবর আনা হচ্ছে...</span>`;
+
+            gridEl.innerHTML = `
+                <div class="col-span-full bg-white rounded-2xl p-8 text-center border border-slate-200">
+                    <div class="w-9 h-9 border-4 border-red-200 spinner-ring rounded-full mx-auto mb-3"></div>
+                    <p class="font-bold text-slate-700">নির্বাচিত পোর্টাল ও ফেসবুক পেইজ ফিড থেকে খবর সংগ্রহ করা হচ্ছে...</p>
+                </div>
+            `;
+
+            let fetchedItems = [];
+
+            for (const src of sources) {
+                try {
+                    const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(src.url)}`;
+                    const res = await fetch(apiUrl);
+                    const data = await res.json();
+
+                    if (data.status === "ok" && Array.isArray(data.items)) {
+                        const mapped = data.items.slice(0, 4).map(item => {
+                            let thumb = item.thumbnail || "";
+                            if (!thumb && item.enclosure && item.enclosure.link) {
+                                thumb = item.enclosure.link;
+                            }
+                            if (!thumb && item.description) {
+                                const imgMatch = item.description.match(/<img[^>]+src="([^">]+)"/i);
+                                if (imgMatch) thumb = imgMatch[1];
+                            }
+
+                            return {
+                                source: src.name,
+                                category: detectBengaliCategory(item.title || ""),
+                                title: (item.title || "শিরোনামহীন সংবাদ").trim(),
+                                excerpt: stripHtmlTags(item.description || item.content || "").trim(),
+                                image: thumb,
+                                date: item.pubDate ? item.pubDate.split(" ")[0] : "সর্বশেষ"
+                            };
+                        });
+                        fetchedItems.push(...mapped);
+                    }
+                } catch (err) {
+                    console.warn("RSS fetch failed for:", src.name, err);
+                }
+            }
+
+            btn.disabled = false;
+            btn.innerHTML = `<span class="text-base">🔄</span><span>সব সোর্স থেকে সর্বশেষ খবর আনুন</span>`;
+
+            if (fetchedItems.length > 0) {
+                currentFeedItems = fetchedItems;
+                renderFeedCards(currentFeedItems);
+                document.getElementById("feedStatusSubtitle").textContent = `মোট ${fetchedItems.length}টি সর্বশেষ সংবাদ লোড হয়েছে`;
+                showToast(`${fetchedItems.length}টি সর্বশেষ সংবাদ লোড হয়েছে!`);
+            } else {
+                currentFeedItems = [...SAMPLE_NEWS_ITEMS];
+                renderFeedCards(currentFeedItems);
+                showToast("লাইভ ফিড পাওয়া যায়নি, স্যাম্পল সংবাদ দেখানো হচ্ছে", "info");
+            }
+        }
+
+        function renderFeedCards(items) {
+            const gridEl = document.getElementById("newsFeedGrid");
+            gridEl.innerHTML = items.map((item, idx) => {
+                const shortExcerpt = item.excerpt.length > 145 ? item.excerpt.substring(0, 145) + "..." : item.excerpt;
+                const thumbHTML = item.image
+                    ? `<div class="w-full h-40 rounded-xl overflow-hidden bg-slate-100 mb-3 border border-slate-200">
+                           <img src="${escapeHTML(item.image)}" alt="News" onerror="this.parentElement.style.display='none'" class="w-full h-full object-cover">
+                       </div>`
+                    : "";
+
+                return `
+                    <article class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200 hover:border-red-300 transition flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between gap-2 mb-2.5">
+                                <span class="text-xs font-bold bg-red-50 text-red-700 border border-red-200 px-2.5 py-0.5 rounded-lg truncate">
+                                    ${escapeHTML(item.source)}
+                                </span>
+                                <span class="text-[11px] font-medium text-slate-400 shrink-0">${escapeHTML(item.date)}</span>
+                            </div>
+                            ${thumbHTML}
+                            <h3 class="font-bold text-slate-900 text-base leading-snug mb-2">${escapeHTML(item.title)}</h3>
+                            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-4">${escapeHTML(shortExcerpt)}</p>
+                        </div>
+
+                        <button onclick="openPhotocardFromFeedItem(${idx})" class="w-full bg-slate-900 hover:bg-red-600 active:scale-[0.99] text-white font-bold text-sm py-3 px-4 rounded-xl transition flex items-center justify-center gap-2 shadow-xs">
+                            <span>🎨</span>
+                            <span>AI ফটোকার্ড তৈরি করুন</span>
+                        </button>
+                    </article>
+                `;
+            }).join("");
+        }
+
+        function openPhotocardFromFeedItem(index) {
+            const item = currentFeedItems[index];
+            if (!item) return;
+
+            studioState.rawSourceText = `${item.title}. ${item.excerpt}`;
+            studioState.category = item.category || "জাতীয়";
+
+            if (item.image) {
+                loadNewsImageFromUrl(item.image);
+            } else {
+                studioState.newsImageObj = null;
+            }
+
+            openPhotocardStudioWithAI(studioState.rawSourceText, studioState.category);
+        }
+
+        function handleLogoFileUpload(event) {
+            const file = event.target.files?.[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Str = e.target.result;
+                try {
+                    localStorage.setItem("vorb_logo_base64", base64Str);
+                } catch (err) {}
+                applyLogoDataURL(base64Str);
+                showToast("পোর্টালের লোগো আপলোড ও সেভ হয়েছে!");
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function applyLogoDataURL(dataUrl) {
+            const img = new Image();
+            img.onload = function() {
+                studioState.logoImageObj = img;
+                const hdrImg = document.getElementById("headerBrandLogo");
+                const hdrFb = document.getElementById("headerBrandFallback");
+                hdrImg.src = dataUrl;
+                hdrImg.classList.remove("hidden");
+                hdrFb.classList.add("hidden");
+
+                const setImg = document.getElementById("settingsLogoPreview");
+                const setFb = document.getElementById("settingsLogoFallback");
+                setImg.src = dataUrl;
+                setImg.classList.remove("hidden");
+                setFb.classList.add("hidden");
+
+                renderPhotocardCanvas();
+            };
+            img.src = dataUrl;
+        }
+
+        function removeSavedLogo() {
+            localStorage.removeItem("vorb_logo_base64");
+            studioState.logoImageObj = null;
+            document.getElementById("headerBrandLogo").classList.add("hidden");
+            document.getElementById("headerBrandFallback").classList.remove("hidden");
+            document.getElementById("settingsLogoPreview").classList.add("hidden");
+            document.getElementById("settingsLogoFallback").classList.remove("hidden");
+            document.getElementById("logoFileInput").value = "";
+            renderPhotocardCanvas();
+            showToast("কাস্টম লোগো মুছে ফেলা হয়েছে", "info");
+        }
+
+        function selectBrandTheme(themeKey) {
+            if (!BRAND_THEMES[themeKey]) return;
+            studioState.themeKey = themeKey;
+            highlightSelectedThemeBtn(themeKey);
+            renderPhotocardCanvas();
+        }
+
+        function highlightSelectedThemeBtn(activeKey) {
+            document.querySelectorAll(".theme-selector-btn").forEach(btn => {
+                btn.classList.remove("border-red-600", "ring-2", "ring-offset-1", "ring-slate-400");
+                btn.classList.add("border-transparent");
+            });
+            const activeBtn = document.getElementById(`themeBtn-${activeKey}`);
+            if (activeBtn) {
+                activeBtn.classList.remove("border-transparent");
+                activeBtn.classList.add("border-red-600", "ring-2", "ring-offset-1", "ring-slate-400");
+            }
+        }
+
+        function saveAllSettings() {
+            const portalName = document.getElementById("settingPortalName").value.trim() || "𝐕𝐨𝐢𝐜𝐞 𝐎𝐟 𝐑𝐢𝐬𝐢𝐧𝐠 𝐁𝐚𝐧𝐠𝐥𝐚";
+            const websiteUrl = document.getElementById("settingWebsiteUrl").value.trim() || "voiceofrisingbangla.com";
+            const geminiKey = document.getElementById("settingGeminiKey").value.trim();
+
+            studioState.portalName = portalName;
+            studioState.websiteUrl = websiteUrl;
+            document.getElementById("headerPortalTitle").textContent = portalName;
+
+            localStorage.setItem("vorb_brand_config", JSON.stringify({ portalName, websiteUrl, themeKey: studioState.themeKey }));
+            if (geminiKey) localStorage.setItem("gemini_api_key", geminiKey);
+            else localStorage.removeItem("gemini_api_key");
+
+            renderPhotocardCanvas();
+            showToast("সব ব্র্যান্ডিং ও সেটিংস সফলভাবে সেভ হয়েছে!");
+        }
+
+        async function openPhotocardStudioWithAI(rawText, fallbackCategory) {
+            const modal = document.getElementById("photocardStudioModal");
+            const loadingBar = document.getElementById("studioAiLoadingBar");
+
+            modal.classList.remove("hidden");
+            loadingBar.classList.remove("hidden");
+
+            studioState.headline = formatBengaliHeadlineLocally(rawText);
+            studioState.category = fallbackCategory || detectBengaliCategory(rawText);
+            syncStudioInputsFromState();
+            renderPhotocardCanvas();
+
+            const result = await generateHeadlineWithGeminiOrFallback(rawText, studioState.category);
+            studioState.headline = result.headline;
+            studioState.category = result.category;
+
+            syncStudioInputsFromState();
+            renderPhotocardCanvas();
+            loadingBar.classList.add("hidden");
+            showToast("AI ফটোকার্ড প্রস্তুত! নিচে থেকে PNG ডাউনলোড করুন।");
+        }
+
+        async function regenerateHeadlineWithAI() {
+            const sourceText = studioState.rawSourceText || document.getElementById("studioHeadlineInput").value.trim();
+            if (!sourceText) return;
+
+            const btn = document.getElementById("studioReAiBtn");
+            const loadingBar = document.getElementById("studioAiLoadingBar");
+            btn.disabled = true;
+            loadingBar.classList.remove("hidden");
+
+            const result = await generateHeadlineWithGeminiOrFallback(sourceText, studioState.category);
+            studioState.headline = result.headline;
+            studioState.category = result.category;
+
+            syncStudioInputsFromState();
+            renderPhotocardCanvas();
+
+            btn.disabled = false;
+            loadingBar.classList.add("hidden");
+            showToast("নতুন AI শিরোনাম তৈরি হয়েছে!");
+        }
+
+        async function generateHeadlineWithGeminiOrFallback(rawText, defaultCat) {
+            const apiKey = (localStorage.getItem("gemini_api_key") || "").trim();
+            if (!apiKey) {
+                return {
+                    category: defaultCat || detectBengaliCategory(rawText),
+                    headline: formatBengaliHeadlineLocally(rawText)
+                };
+            }
+
+            const prompt = `তুমি বাংলা নিউজ পোর্টাল '${studioState.portalName}'-এর একজন দক্ষ সংবাদ সম্পাদক। নিচের সংবাদের লেখাটি পড়ে ফেসবুক ফটোকার্ডের জন্য ৮ থেকে ১৪ শব্দের মধ্যে একটি অত্যন্ত আকর্ষণীয়, স্পষ্ট ও কপিরাইট-মুক্ত বাংলা শিরোনাম এবং ১ শব্দের ক্যাটাগরি তৈরি করো।
+
+অবশ্যই নিচের ফরম্যাটে উত্তর দিবে:
+CATEGORY: [যেকোনো একটি: জাতীয় / আন্তর্জাতিক / খেলাধুলা / বিনোদন / প্রযুক্তি / ব্রেকিং]
+HEADLINE: [৮-১৪ শব্দের আকর্ষণীয় বাংলা ফটোকার্ড শিরোনাম]
+
+সংবাদের তথ্য: ${rawText}`;
+
+            try {
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(apiKey)}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                });
+
+                if (!res.ok) throw new Error("API Error");
+                const data = await res.json();
+                const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+
+                const catMatch = reply.match(/CATEGORY:\s*(.+)/);
+                const headMatch = reply.match(/HEADLINE:\s*(.+)/);
+
+                if (headMatch && headMatch[1].trim()) {
+                    return {
+                        category: catMatch ? catMatch[1].trim() : defaultCat,
+                        headline: headMatch[1].trim().replace(/^["']|["']$/g, "")
+                    };
+                }
+                throw new Error();
+            } catch (err) {
+                return {
+                    category: defaultCat || detectBengaliCategory(rawText),
+                    headline: formatBengaliHeadlineLocally(rawText)
+                };
+            }
+        }
+
+        function formatBengaliHeadlineLocally(text) {
+            const cleaned = stripHtmlTags(text).replace(/https?:\/\/\S+/g, "").replace(/#\S+/g, "").replace(/\s+/g, " ").trim();
+            const firstSentence = cleaned.split(/[।!?|\n]/)[0].trim() || cleaned;
+            const words = firstSentence.split(" ").filter(Boolean);
+            if (words.length <= 14) return firstSentence;
+            return words.slice(0, 13).join(" ") + "...";
+        }
+
+        function detectBengaliCategory(text) {
+            if (/ক্রিকেট|ফুটবল|খেলা|ম্যাচ|গোল|উইকেট|টুর্নামেন্ট/.test(text)) return "খেলাধুলা";
+            if (/বিশ্ব|আন্তর্জাতিক|যুক্তরাষ্ট্র|ভারত|চীন|মধ্যপ্রাচ্য|জাতিসংঘ/.test(text)) return "আন্তর্জাতিক";
+            if (/প্রযুক্তি|এআই|কৃত্রিম বুদ্ধিমত্তা|ইন্টারনেট|স্মার্টফোন|ডিজিটাল/.test(text)) return "প্রযুক্তি";
+            if (/সিনেমা|নাটক|অভিনেতা|অভিনেত্রী|সংগীত|বিনোদন/.test(text)) return "বিনোদন";
+            return "জাতীয়";
+        }
+
+        function syncStudioInputsFromState() {
+            document.getElementById("studioHeadlineInput").value = studioState.headline;
+            document.getElementById("studioCategoryInput").value = studioState.category;
+            document.getElementById("studioFontSizeSlider").value = studioState.fontSize;
+            document.getElementById("studioFontSizeLabel").textContent = studioState.fontSize;
+        }
+
+        function onStudioInputChange() {
+            studioState.headline = document.getElementById("studioHeadlineInput").value;
+            studioState.category = document.getElementById("studioCategoryInput").value;
+            studioState.fontSize = parseInt(document.getElementById("studioFontSizeSlider").value, 10);
+            document.getElementById("studioFontSizeLabel").textContent = studioState.fontSize;
+            renderPhotocardCanvas();
+        }
+
+        function setCardLayout(layoutName) {
+            studioState.layout = layoutName;
+            document.querySelectorAll(".layout-btn").forEach(btn => {
+                btn.className = "layout-btn py-2 px-2 rounded-xl text-[11px] font-bold border-2 border-slate-200 bg-slate-50 text-slate-700 transition";
+            });
+            const active = document.getElementById(`layoutBtn-${layoutName}`);
+            if (active) active.className = "layout-btn py-2 px-2 rounded-xl text-[11px] font-bold border-2 border-red-600 bg-red-50 text-red-700 transition";
+            renderPhotocardCanvas();
+        }
+
+        function handleStudioPhotoUpload(event) {
+            const file = event.target.files?.[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    studioState.newsImageObj = img;
+                    renderPhotocardCanvas();
+                    showToast("ফটোকার্ডের ছবি পরিবর্তন হয়েছে!");
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function loadNewsImageFromUrl(url) {
+            const img = new Image();
+            img.crossOrigin = "anonymous";
+            img.onload = function() {
+                studioState.newsImageObj = img;
+                renderPhotocardCanvas();
+            };
+            img.onerror = function() {
+                studioState.newsImageObj = null;
+                renderPhotocardCanvas();
+            };
+            img.src = url;
+        }
+
+        function closePhotocardStudio() {
+            document.getElementById("photocardStudioModal").classList.add("hidden");
+        }
+
+        function renderPhotocardCanvas() {
+            const canvas = document.getElementById("photocardCanvas");
+            if (!canvas) return;
+            const ctx = canvas.getContext("2d");
+            const W = 1080;
+            const H = 1080;
+            const theme = BRAND_THEMES[studioState.themeKey] || BRAND_THEMES.crimson;
+
+            ctx.clearRect(0, 0, W, H);
+
+            const topBarH = 122;
+            const footerH = 88;
+            const footerY = H - footerH;
+
+            if (studioState.layout === "classic") {
+                drawNewsBackgroundArea(ctx, 0, topBarH, W, footerY - topBarH, theme);
+                const grad = ctx.createLinearGradient(0, 310, 0, footerY);
+                grad.addColorStop(0, "rgba(2, 6, 23, 0.08)");
+                grad.addColorStop(0.45, "rgba(2, 6, 23, 0.82)");
+                grad.addColorStop(1, "rgba(2, 6, 23, 0.98)");
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 310, W, footerY - 310);
+
+                drawHeaderBar(ctx, W, topBarH, theme);
+                drawHeadlineBlock(ctx, W, footerY - 42, theme, "#ffffff");
+                drawFooterBar(ctx, W, footerY, footerH, theme);
+            } else if (studioState.layout === "split") {
+                const imgAreaH = 510;
+                drawNewsBackgroundArea(ctx, 0, topBarH, W, imgAreaH, theme);
+                ctx.fillStyle = "#ffffff";
+                ctx.fillRect(0, topBarH + imgAreaH, W, footerY - (topBarH + imgAreaH));
+                ctx.fillStyle = theme.primary;
+                ctx.fillRect(0, topBarH + imgAreaH, W, 8);
+
+                drawHeaderBar(ctx, W, topBarH, theme);
+                drawHeadlineBlock(ctx, W, footerY - 36, theme, "#0f172a", true);
+                drawFooterBar(ctx, W, footerY, footerH, theme);
+            } else {
+                drawNewsBackgroundArea(ctx, 0, 0, W, H, theme);
+                const fullGrad = ctx.createLinearGradient(0, 0, 0, H);
+                fullGrad.addColorStop(0, "rgba(2, 6, 23, 0.78)");
+                fullGrad.addColorStop(0.45, "rgba(2, 6, 23, 0.45)");
+                fullGrad.addColorStop(1, "rgba(2, 6, 23, 0.95)");
+                ctx.fillStyle = fullGrad;
+                ctx.fillRect(0, 0, W, H);
+
+                ctx.strokeStyle = "rgba(255, 255, 255, 0.16)";
+                ctx.lineWidth = 3;
+                roundRectPath(ctx, 28, 28, W - 56, H - 56, 26);
+                ctx.stroke();
+
+                drawHeaderBar(ctx, W, topBarH, theme, true);
+                drawHeadlineBlock(ctx, W, footerY - 46, theme, "#ffffff");
+                drawFooterBar(ctx, W, footerY, footerH, theme);
+            }
+        }
+
+        function drawNewsBackgroundArea(ctx, x, y, w, h, theme) {
+            if (studioState.newsImageObj) {
+                drawImageCover(ctx, studioState.newsImageObj, x, y, w, h);
+            } else {
+                const bgGrad = ctx.createLinearGradient(x, y, x + w, y + h);
+                bgGrad.addColorStop(0, theme.gradStart);
+                bgGrad.addColorStop(1, theme.gradEnd);
+                ctx.fillStyle = bgGrad;
+                ctx.fillRect(x, y, w, h);
+            }
+        }
+
+        function drawHeaderBar(ctx, W, topBarH, theme, transparent = false) {
+            if (!transparent) {
+                ctx.fillStyle = theme.topBg;
+                ctx.fillRect(0, 0, W, topBarH);
+                ctx.fillStyle = theme.primary;
+                ctx.fillRect(0, topBarH - 6, W, 6);
+            }
+
+            const logoSize = 74;
+            const logoX = 44;
+            const logoY = (topBarH - logoSize) / 2;
+
+            if (studioState.logoImageObj) {
+                ctx.save();
+                roundRectPath(ctx, logoX, logoY, logoSize, logoSize, 16);
+                ctx.clip();
+                ctx.drawImage(studioState.logoImageObj, logoX, logoY, logoSize, logoSize);
+                ctx.restore();
+            } else {
+                ctx.fillStyle = theme.primary;
+                roundRectPath(ctx, logoX, logoY, logoSize, logoSize, 18);
+                ctx.fill();
+                ctx.fillStyle = "#ffffff";
+                ctx.font = "900 36px 'Noto Sans Bengali', sans-serif";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.fillText("VR", logoX + logoSize / 2, logoY + logoSize / 2 + 2);
+            }
+
+            ctx.textAlign = "left";
+            ctx.textBaseline = "middle";
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "700 35px 'Hind Siliguri', sans-serif";
+            ctx.fillText(studioState.portalName, logoX + logoSize + 20, topBarH / 2);
+
+            const dateStr = getBengaliDateToday();
+            ctx.font = "600 23px 'Hind Siliguri', sans-serif";
+            const pillW = ctx.measureText(dateStr).width + 34;
+            const pillH = 44;
+            const pillX = W - pillW - 42;
+            const pillY = (topBarH - pillH) / 2;
+
+            ctx.fillStyle = "rgba(255, 255, 255, 0.14)";
+            roundRectPath(ctx, pillX, pillY, pillW, pillH, 22);
+            ctx.fill();
+
+            ctx.fillStyle = "#f8fafc";
+            ctx.textAlign = "center";
+            ctx.fillText(dateStr, pillX + pillW / 2, pillY + pillH / 2 + 1);
+        }
+
+        function drawHeadlineBlock(ctx, W, bottomAnchorY, theme, textColor, isLightBg = false) {
+            const headline = (studioState.headline || "শিরোনাম লিখুন...").trim();
+            const fontSize = studioState.fontSize;
+            const lineHeight = Math.round(fontSize * 1.34);
+            const maxTextW = W - 116;
+
+            ctx.font = `800 ${fontSize}px 'Noto Sans Bengali', 'Hind Siliguri', sans-serif`;
+            const lines = wrapBengaliLines(ctx, headline, maxTextW);
+
+            const totalTextH = lines.length * lineHeight;
+            const textStartY = bottomAnchorY - totalTextH;
+
+            const catText = (studioState.category || "জাতীয়").trim();
+            ctx.font = "700 25px 'Hind Siliguri', sans-serif";
+            const badgeW = ctx.measureText(catText).width + 42;
+            const badgeH = 44;
+            const badgeX = 52;
+            const badgeY = textStartY - badgeH - 22;
+
+            ctx.fillStyle = theme.badgeBg;
+            roundRectPath(ctx, badgeX, badgeY, badgeW, badgeH, 10);
+            ctx.fill();
+
+            ctx.fillStyle = theme.badgeText;
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(catText, badgeX + badgeW / 2, badgeY + badgeH / 2 + 2);
+
+            ctx.fillStyle = theme.primary;
+            roundRectPath(ctx, 52, textStartY + 4, 10, Math.max(40, totalTextH - 10), 5);
+            ctx.fill();
+
+            ctx.save();
+            if (!isLightBg) {
+                ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
+                ctx.shadowBlur = 12;
+                ctx.shadowOffsetY = 4;
+            }
+            ctx.fillStyle = textColor;
+            ctx.font = `800 ${fontSize}px 'Noto Sans Bengali', 'Hind Siliguri', sans-serif`;
+            ctx.textAlign = "left";
+            ctx.textBaseline = "top";
+
+            lines.forEach((line, idx) => {
+                ctx.fillText(line, 80, textStartY + idx * lineHeight);
+            });
+            ctx.restore();
+        }
+
+        function drawFooterBar(ctx, W, footerY, footerH, theme) {
+            ctx.fillStyle = theme.footerBg;
+            ctx.fillRect(0, footerY, W, footerH);
+
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "700 27px 'Hind Siliguri', sans-serif";
+            ctx.textAlign = "left";
+            ctx.textBaseline = "middle";
+            ctx.fillText(`🌐 ${studioState.websiteUrl}`, 48, footerY + footerH / 2 + 1);
+
+            ctx.textAlign = "right";
+            ctx.font = "700 25px 'Hind Siliguri', sans-serif";
+            ctx.fillStyle = "#fef08a";
+            ctx.fillText("বিস্তারিত কমেন্টে / ওয়েবসাইটে  |  f  ▶", W - 48, footerY + footerH / 2 + 1);
+        }
+
+        function wrapBengaliLines(ctx, text, maxWidth) {
+            const words = text.split(/\s+/);
+            const lines = [];
+            let current = "";
+
+            for (let i = 0; i < words.length; i++) {
+                const candidate = current ? `${current} ${words[i]}` : words[i];
+                if (ctx.measureText(candidate).width > maxWidth && current) {
+                    lines.push(current);
+                    current = words[i];
+                } else {
+                    current = candidate;
+                }
+            }
+            if (current) lines.push(current);
+            return lines.slice(0, 4);
+        }
+
+        function drawImageCover(ctx, img, x, y, w, h) {
+            const imgRatio = img.width / img.height;
+            const targetRatio = w / h;
+            let drawW, drawH, offsetX, offsetY;
+
+            if (imgRatio > targetRatio) {
+                drawH = h;
+                drawW = h * imgRatio;
+                offsetX = x - (drawW - w) / 2;
+                offsetY = y;
+            } else {
+                drawW = w;
+                drawH = w / imgRatio;
+                offsetX = x;
+                offsetY = y - (drawH - h) / 2;
+            }
+            ctx.save();
+            ctx.beginPath();
+            ctx.rect(x, y, w, h);
+            ctx.clip();
+            ctx.drawImage(img, offsetX, offsetY, drawW, drawH);
+            ctx.restore();
+        }
+
+        function roundRectPath(ctx, x, y, w, h, r) {
+            ctx.beginPath();
+            ctx.moveTo(x + r, y);
+            ctx.arcTo(x + w, y, x + w, y + h, r);
+            ctx.arcTo(x + w, y + h, x, y + h, r);
+            ctx.arcTo(x, y + h, x, y, r);
+            ctx.arcTo(x, y, x + w, y, r);
+            ctx.closePath();
+        }
+
+        function downloadPhotocardToGallery() {
+            renderPhotocardCanvas();
+            const canvas = document.getElementById("photocardCanvas");
+            try {
+                const pngDataUrl = canvas.toDataURL("image/png");
+                const link = document.createElement("a");
+                const stamp = new Date().toISOString().slice(0, 10);
+                link.download = `vor-bangla-photocard-${stamp}.png`;
+                link.href = pngDataUrl;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                showToast("ফটোকার্ড (PNG) আপনার গ্যালারিতে ডাউনলোড হচ্ছে!");
+            } catch (err) {
+                showToast("ছবি ডাউনলোডে সমস্যা হয়েছে।", "error");
+            }
+        }
+
+        function copyFacebookCaption() {
+            const headline = studioState.headline.trim();
+            const site = studioState.websiteUrl.trim();
+            const caption = `📰 ${headline}\n\nবিস্তারিত পড়ুন কমেন্টে দেওয়া লিংকে অথবা ভিজিট করুন: https://${site.replace(/^https?:\/\//, "")}\n\n#VoiceOfRisingBangla #BanglaNews #BreakingNews #বাংলা_সংবাদ`;
+
+            const tempArea = document.createElement("textarea");
+            tempArea.value = caption;
+            tempArea.style.position = "fixed";
+            tempArea.style.left = "-9999px";
+            document.body.appendChild(tempArea);
+            tempArea.select();
+            try {
+                document.execCommand("copy");
+                showToast("ফেসবুক পোস্টের ক্যাপশন কপি হয়েছে!");
+            } catch {
+                showToast("কপি করতে সমস্যা হয়েছে", "error");
+            }
+            document.body.removeChild(tempArea);
+        }
+
+        function downloadStandaloneHTML() {
+            const fullHtml = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+            const blob = new Blob([fullHtml], { type: "text/html;charset=utf-8" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "vor-bangla-photocard-ai.html";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast("vor-bangla-photocard-ai.html ডাউনলোড শুরু হয়েছে!");
+        }
+
+        function stripHtmlTags(html) {
+            const doc = new DOMParser().parseFromString(html, "text/html");
+            return doc.body.textContent || "";
+        }
+
+        function escapeHTML(str) {
+            return String(str)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+    </script>
 </body>
-</html>
+    </html>
