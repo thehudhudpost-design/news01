@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>𝐕𝐨𝐢𝐜𝐞 𝐎𝐟 𝐑𝐢𝐬𝐢𝐧𝐠 𝐁𝐚𝐧𝐠𝐥𝐚 - নিউজ ক্লিপার ও কপি টুল</title>
+    <title>𝐕𝐨𝐢𝐜𝐞 𝐎𝐟 𝐑𝐢𝐬𝐢𝐧𝐠 𝐁𝐚𝐧𝐠𝐥𝐚 - অটো নিউজ ও ফটোকার্ড স্টুডিও</title>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
             --primary: #d93025;
@@ -40,15 +41,43 @@
         }
         .card h2 { margin-top: 0; font-size: 16px; border-bottom: 1px solid #eee; padding-bottom: 6px; color: var(--primary); }
 
-        textarea, input { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px; }
-        textarea { resize: vertical; }
+        textarea, input, select { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px; }
         
-        button { padding: 12px; border: none; border-radius: 6px; font-size: 15px; font-weight: bold; cursor: pointer; width: 100%; margin-bottom: 5px; }
+        button { padding: 12px; border: none; border-radius: 6px; font-size: 15px; font-weight: bold; cursor: pointer; width: 100%; margin-bottom: 8px; }
         .btn-primary { background: var(--primary); color: white; }
         .btn-primary:hover { background: var(--primary-dark); }
         .btn-success { background: var(--success); color: white; }
         .btn-success:hover { background: #0b8043; }
 
+        /* Photo Card Preview Area */
+        #photoCard {
+            width: 100%;
+            max-width: 400px;
+            height: 400px;
+            margin: 0 auto 15px auto;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .pc-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.45); z-index: 1; }
+        .pc-content { position: relative; z-index: 2; display: flex; flex-direction: column; height: 100%; justify-content: space-between; }
+        .pc-header { display: flex; justify-content: space-between; align-items: center; }
+        .pc-badge { background: #d93025; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .pc-brand { font-size: 13px; font-weight: bold; }
+        .pc-title { font-size: 19px; font-weight: 700; line-height: 1.4; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+        .pc-footer { font-size: 11px; opacity: 0.9; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 6px; text-align: center; }
+        
+        .news-list-item { background: #f8f9fa; border: 1px solid #ddd; padding: 10px; border-radius: 6px; margin-bottom: 8px; cursor: pointer; transition: 0.2s; }
+        .news-list-item:hover { background: #e8f0fe; border-color: #4285f4; }
         .alert-success { color: var(--success); font-weight: bold; font-size: 13px; margin-top: 6px; text-align: center; display: none; }
     </style>
 </head>
@@ -57,67 +86,150 @@
 <div class="container">
     <header>
         <h1>𝐕𝐨𝐢𝐜𝐞 𝐎𝐟 𝐑𝐢𝐬𝐢𝐧𝐠 𝐁𝐚𝐧𝐠𝐥𝐚</h1>
-        <p>এক ক্লিকে নিউজ কপি ও কমেন্ট টুল</p>
+        <p>সোর্স নিউজ থেকে অটো ফটোকার্ড ও কপি স্টুডিও</p>
     </header>
 
-    <!-- ইনপুট সেকশন -->
+    <!-- সোর্স ম্যানেজার ও ফিড ফেচার -->
     <div class="card">
-        <h2>১. নিউজ বা পোস্ট এখানে পেস্ট করুন</h2>
-        <textarea id="rawNews" rows="5" placeholder="যেকোনো নিউজ পোর্টাল বা ফেসবুক পেজ থেকে মূল লেখাটি এখানে পেস্ট করুন..."></textarea>
-        <button class="btn-primary" onclick="formatForSocialMedia()">✨ সাজিয়ে নিন</button>
+        <h2>১. নিউজ পোর্টাল বা পেজ সিলেক্ট করুন</h2>
+        <select id="sourceSelect" onchange="fetchNewsFeed()">
+            <option value="https://www.bbc.com/bengali/index.xml">বিবিসি বাংলা (RSS)</option>
+            <option value="https://www.prothomalo.com/feed">প্রথম আলো (RSS)</option>
+        </select>
+        <button class="btn-primary" onclick="fetchNewsFeed()">🔄 সর্বশেষ খবর লোড করুন</button>
+        <div id="newsItemsContainer" style="max-height: 200px; overflow-y: auto; margin-top: 10px;"></div>
     </div>
 
-    <!-- আউটপুট ও কপি সেকশন -->
+    <!-- এডিটর ও ফটো কার্ড সেকশন -->
     <div class="card">
-        <h2>২. ফাইনাল আউটপুট (কপি করার জন্য প্রস্তুত)</h2>
+        <h2>২. খবরের শিরোনাম ও বিবরণ</h2>
         <label><strong>শিরোনাম:</strong></label>
-        <input type="text" id="finalTitle" placeholder="শিরোনাম...">
+        <input type="text" id="inputTitle" placeholder="খবরের শিরোনাম এখানে থাকবে..." oninput="updateCard()">
 
-        <label><strong>বিস্তারিত বিবরণ:</strong></label>
-        <textarea id="finalBody" rows="6" placeholder="বিস্তারিত বিবরণ..."></textarea>
+        <label><strong>ক্যাটাগরি:</strong></label>
+        <input type="text" id="inputCategory" value="জাতীয় সংবাদ" oninput="updateCard()">
 
-        <button class="btn-success" onclick="copyEntirePost()">📋 পুরো লেখা এক ক্লিকে কপি করুন</button>
-        <div id="copyAlert" class="alert-success">সফল! পুরো লেখা কপি হয়ে গেছে। এবার যেখানে খুশি পেস্ট করুন।</div>
+        <label><strong>ব্যাকগ্রাউন্ড ছবির লিংক বা আপলোড:</strong></label>
+        <input type="file" id="imageUpload" accept="image/*" onchange="loadLocalImage(event)">
+
+        <label><strong>বিস্তারিত বিবরণ (কমেন্ট/পোস্টের জন্য):</strong></label>
+        <textarea id="rawBody" rows="4" placeholder="বিস্তারিত বিবরণ..."></textarea>
+    </div>
+
+    <!-- লাইভ ফটো কার্ড প্রিভিউ -->
+    <div class="card" style="text-align: center;">
+        <h2>৩. ফটো কার্ড প্রিভিউ</h2>
+        <div id="photoCard">
+            <div class="pc-overlay"></div>
+            <div class="pc-content">
+                <div class="pc-header">
+                    <span class="pc-badge" id="cardCategory">জাতীয় সংবাদ</span>
+                    <span class="pc-brand">𝐕𝐨𝐢𝐜𝐞 𝐎𝐟 𝐑𝐢𝐬𝐢𝐧𝐠 𝐁𝐚𝐧𝐠𝐥𝐚</span>
+                </div>
+                <div class="pc-title" id="cardTitle">খবরের শিরোনাম এখানে দেখাবে...</div>
+                <div class="pc-footer">voiceofrisingbangla.com</div>
+            </div>
+        </div>
+        <button class="btn-success" onclick="downloadCard()">📥 ফটো কার্ড গ্যালারিতে ডাউনলোড করুন</button>
+    </div>
+
+    <!-- টেক্সট কপি সেকশন -->
+    <div class="card">
+        <h2>৪. ফেসবুক পোস্ট টেক্সট কপি</h2>
+        <button class="btn-primary" onclick="prepareText()">✨ ফেসবুকের জন্য টেক্সট সাজান</button>
+        <textarea id="finalShareText" rows="5" placeholder="সাজানো টেক্সট এখানে আসবে..." style="margin-top: 10px;"></textarea>
+        <button class="btn-success" onclick="copyEntirePost()">📋 পুরো টেক্সট এক ক্লিকে কপি করুন</button>
+        <div id="copyAlert" class="alert-success">সফল! টেক্সট কপি হয়ে গেছে।</div>
     </div>
 </div>
 
 <script>
-    function formatForSocialMedia() {
-        const text = document.getElementById('rawNews').value.trim();
-        if (!text) {
-            alert("আগে প্রথম বক্সে কিছু লেখা বা নিউজ পেস্ট করুন!");
+    window.onload = function() {
+        fetchNewsFeed();
+    };
+
+    async function fetchNewsFeed() {
+        const rssUrl = document.getElementById('sourceSelect').value;
+        const container = document.getElementById('newsItemsContainer');
+        container.innerHTML = '<p style="text-align:center; color:#666;">খবর লোড হচ্ছে...</p>';
+
+        try {
+            const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+            const res = await fetch(apiUrl);
+            const data = await res.json();
+
+            if (data.status === 'ok' && data.items) {
+                container.innerHTML = '';
+                data.items.slice(0, 5).forEach((item) => {
+                    const cleanDesc = item.description ? item.description.replace(/<[^>]*>?/gm, '') : '';
+                    const div = document.createElement('div');
+                    div.className = 'news-list-item';
+                    div.innerHTML = `<strong>${item.title}</strong>`;
+                    div.onclick = function() {
+                        document.getElementById('inputTitle').value = item.title;
+                        document.getElementById('rawBody').value = cleanDesc;
+                        updateCard();
+                    };
+                    container.appendChild(div);
+                });
+            } else {
+                container.innerHTML = '<p style="text-align:center; color:red;">খবর পাওয়া যায়নি।</p>';
+            }
+        } catch (e) {
+            container.innerHTML = '<p style="text-align:center; color:red;">নেটওয়ার্ক সমস্যা!</p>';
+        }
+    }
+
+    function updateCard() {
+        const title = document.getElementById('inputTitle').value;
+        const category = document.getElementById('inputCategory').value;
+        document.getElementById('cardTitle').innerText = title || "খবরের শিরোনাম এখানে দেখাবে...";
+        document.getElementById('cardCategory').innerText = category || "সংবাদ";
+    }
+
+    function loadLocalImage(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('photoCard').style.backgroundImage = `url('${e.target.result}')`;
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function downloadCard() {
+        const cardElement = document.getElementById('photoCard');
+        html2canvas(cardElement, { scale: 3, useCORS: true }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = 'voice-of-rising-bangla-photocard.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        });
+    }
+
+    function prepareText() {
+        const title = document.getElementById('inputTitle').value.trim();
+        const body = document.getElementById('rawBody').value.trim();
+        if (!title) {
+            alert("আগে কোনো খবর সিলেক্ট করুন!");
             return;
         }
 
-        const lines = text.split('\n');
-        const title = lines[0] ? lines[0] : "বিশেষ সংবাদ";
-        let body = lines.slice(1).join('\n').trim();
-        if(!body) body = text;
-
-        const formattedTitle = `🔴 ${title}`;
-        const formattedBody = `${body}\n\n📌 বিস্তারিত পড়তে ভিজিট করুন:\n🔗 https://www.voiceofrisingbangla.com\n\n#VoiceOfRisingBangla #News #Bangladesh`;
-
-        document.getElementById('finalTitle').value = formattedTitle;
-        document.getElementById('finalBody').value = formattedBody;
+        const formattedText = `🔴 ${title}\n\n${body}\n\n📌 বিস্তারিত পড়তে ভিজিট করুন:\n🔗 https://www.voiceofrisingbangla.com\n\n#VoiceOfRisingBangla #News #Bangladesh`;
+        document.getElementById('finalShareText').value = formattedText;
     }
 
     function copyEntirePost() {
-        const title = document.getElementById('finalTitle').value;
-        const body = document.getElementById('finalBody').value;
-
-        if (!title && !body) {
-            alert("আগে লেখা সাজিয়ে নিন!");
+        const text = document.getElementById('finalShareText').value;
+        if (!text) {
+            alert("আগে টেক্সট সাজিয়ে নিন!");
             return;
         }
-
-        const fullText = `${title}\n\n${body}`;
-        navigator.clipboard.writeText(fullText);
-
+        navigator.clipboard.writeText(text);
         const alertBox = document.getElementById('copyAlert');
         alertBox.style.display = 'block';
-        setTimeout(() => {
-            alertBox.style.display = 'none';
-        }, 3000);
+        setTimeout(() => { alertBox.style.display = 'none'; }, 3000);
     }
 </script>
 
