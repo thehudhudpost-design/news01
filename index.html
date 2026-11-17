@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>𝐕𝐨𝐢𝐜𝐞 𝐎𝐟 𝐑𝐢𝐬𝐢𝐧𝐠 𝐁𝐚𝐧𝐠𝐥𝐚 - নিউজ ক্লিপার ও কপি টুল</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #d93025;
+            --primary-dark: #b31412;
+            --bg: #f4f7f6;
+            --card: #ffffff;
+            --text: #202124;
+            --border: #dadce0;
+            --success: #0f9d58;
+        }
+        * { box-sizing: border-box; font-family: 'Hind Siliguri', sans-serif; }
+        body { background: var(--bg); color: var(--text); margin: 0; padding: 15px; }
+        .container { max-width: 650px; margin: 0 auto; }
+        
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 16px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        header h1 { margin: 0; font-size: 19px; }
+        header p { margin: 4px 0 0; font-size: 13px; opacity: 0.9; }
+
+        .card {
+            background: var(--card);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+        }
+        .card h2 { margin-top: 0; font-size: 16px; border-bottom: 1px solid #eee; padding-bottom: 6px; color: var(--primary); }
+
+        textarea, input { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px; }
+        textarea { resize: vertical; }
+        
+        button { padding: 12px; border: none; border-radius: 6px; font-size: 15px; font-weight: bold; cursor: pointer; width: 100%; margin-bottom: 5px; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-success { background: var(--success); color: white; }
+        .btn-success:hover { background: #0b8043; }
+
+        .alert-success { color: var(--success); font-weight: bold; font-size: 13px; margin-top: 6px; text-align: center; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>𝐕𝐨𝐢𝐜𝐞 𝐎𝐟 𝐑𝐢𝐬𝐢𝐧𝐠 𝐁𝐚𝐧𝐠𝐥𝐚</h1>
+        <p>এক ক্লিকে নিউজ কপি ও কমেন্ট টুল</p>
+    </header>
+
+    <!-- ইনপুট সেকশন -->
+    <div class="card">
+        <h2>১. নিউজ বা পোস্ট এখানে পেস্ট করুন</h2>
+        <textarea id="rawNews" rows="5" placeholder="যেকোনো নিউজ পোর্টাল বা ফেসবুক পেজ থেকে মূল লেখাটি এখানে পেস্ট করুন..."></textarea>
+        <button class="btn-primary" onclick="formatForSocialMedia()">✨ সাজিয়ে নিন</button>
+    </div>
+
+    <!-- আউটপুট ও কপি সেকশন -->
+    <div class="card">
+        <h2>২. ফাইনাল আউটপুট (কপি করার জন্য প্রস্তুত)</h2>
+        <label><strong>শিরোনাম:</strong></label>
+        <input type="text" id="finalTitle" placeholder="শিরোনাম...">
+
+        <label><strong>বিস্তারিত বিবরণ:</strong></label>
+        <textarea id="finalBody" rows="6" placeholder="বিস্তারিত বিবরণ..."></textarea>
+
+        <button class="btn-success" onclick="copyEntirePost()">📋 পুরো লেখা এক ক্লিকে কপি করুন</button>
+        <div id="copyAlert" class="alert-success">সফল! পুরো লেখা কপি হয়ে গেছে। এবার যেখানে খুশি পেস্ট করুন।</div>
+    </div>
+</div>
+
+<script>
+    function formatForSocialMedia() {
+        const text = document.getElementById('rawNews').value.trim();
+        if (!text) {
+            alert("আগে প্রথম বক্সে কিছু লেখা বা নিউজ পেস্ট করুন!");
+            return;
+        }
+
+        const lines = text.split('\n');
+        const title = lines[0] ? lines[0] : "বিশেষ সংবাদ";
+        let body = lines.slice(1).join('\n').trim();
+        if(!body) body = text;
+
+        const formattedTitle = `🔴 ${title}`;
+        const formattedBody = `${body}\n\n📌 বিস্তারিত পড়তে ভিজিট করুন:\n🔗 https://www.voiceofrisingbangla.com\n\n#VoiceOfRisingBangla #News #Bangladesh`;
+
+        document.getElementById('finalTitle').value = formattedTitle;
+        document.getElementById('finalBody').value = formattedBody;
+    }
+
+    function copyEntirePost() {
+        const title = document.getElementById('finalTitle').value;
+        const body = document.getElementById('finalBody').value;
+
+        if (!title && !body) {
+            alert("আগে লেখা সাজিয়ে নিন!");
+            return;
+        }
+
+        const fullText = `${title}\n\n${body}`;
+        navigator.clipboard.writeText(fullText);
+
+        const alertBox = document.getElementById('copyAlert');
+        alertBox.style.display = 'block';
+        setTimeout(() => {
+            alertBox.style.display = 'none';
+        }, 3000);
+    }
+</script>
+
+</body>
+</html>
